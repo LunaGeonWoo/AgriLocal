@@ -113,8 +113,7 @@ class ProductDetailScreen extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) => const ChattingScreen()),
+                  MaterialPageRoute(builder: (context) => ChattingScreen()),
                 );
               },
               style: ElevatedButton.styleFrom(

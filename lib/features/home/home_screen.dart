@@ -1,88 +1,76 @@
-import 'package:agrilocal/features/home/product_item.dart';
-import 'package:agrilocal/features/home/product_model.dart';
+import 'package:agrilocal/features/chatting/chatting_list_screen.dart';
+import 'package:agrilocal/product_list/product_list_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class HomeScreen extends StatelessWidget {
+enum Menu { productList, chatting, profile }
+
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final List<Product> products = [
-      Product(
-        name: '김치볶음밥',
-        imageUrl:
-            'https://roout.co.kr/m/p/u/vHf969g/c/tsLVxjn3JeU/i/tmaNCLUJoFS.jpg?w=720',
-        price: 8000,
-        producer: "김농부",
-      ),
-      Product(
-        name: '생선구이',
-        imageUrl:
-            'https://roout.co.kr/m/p/u/vHf969g/c/tsLVxjn3JeU/i/tmaNCLUJoFS.jpg?w=720',
-        price: 4220,
-        producer: "김어부",
-      ),
-      Product(
-        name: '생선구이',
-        imageUrl:
-            'https://roout.co.kr/m/p/u/vHf969g/c/tsLVxjn3JeU/i/tmaNCLUJoFS.jpg?w=720',
-        price: 4220,
-        producer: "김어부",
-      ),
-      Product(
-        name: '생선구이',
-        imageUrl:
-            'https://roout.co.kr/m/p/u/vHf969g/c/tsLVxjn3JeU/i/tmaNCLUJoFS.jpg?w=720',
-        price: 4220,
-        producer: "김어부",
-      ),
-      Product(
-        name: '생선구이',
-        imageUrl:
-            'https://roout.co.kr/m/p/u/vHf969g/c/tsLVxjn3JeU/i/tmaNCLUJoFS.jpg?w=720',
-        price: 4220,
-        producer: "김어부",
-      ),
-      Product(
-        name: '생선구이',
-        imageUrl:
-            'https://roout.co.kr/m/p/u/vHf969g/c/tsLVxjn3JeU/i/tmaNCLUJoFS.jpg?w=720',
-        price: 4220,
-        producer: "김어부",
-      ),
-      Product(
-        name: '생선구이',
-        imageUrl:
-            'https://roout.co.kr/m/p/u/vHf969g/c/tsLVxjn3JeU/i/tmaNCLUJoFS.jpg?w=720',
-        price: 4220,
-        producer: "김어부",
-      ),
-      Product(
-        name: '생선구이',
-        imageUrl:
-            'https://roout.co.kr/m/p/u/vHf969g/c/tsLVxjn3JeU/i/tmaNCLUJoFS.jpg?w=720',
-        price: 4220,
-        producer: "김어부",
-      ),
-    ];
+  State<HomeScreen> createState() => _HomeScreenState();
+}
 
+class ScreenData {
+  final String title;
+  final Widget body;
+
+  ScreenData({
+    required this.title,
+    required this.body,
+  });
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  Menu _selectedMenu = Menu.productList;
+
+  final _showingScreen = {
+    Menu.productList: ScreenData(
+      title: "제품 리스트",
+      body: ProductListScreen(),
+    ),
+    Menu.chatting: ScreenData(
+      title: "채팅",
+      body: const ChattingListScreen(),
+    ),
+    Menu.profile: ScreenData(
+      title: "프로필",
+      body: const Placeholder(),
+    ),
+  };
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('제품 리스트'),
+        title: Text(_showingScreen[_selectedMenu]!.title),
       ),
-      body: GridView.builder(
-        padding: const EdgeInsets.all(10),
-        itemCount: products.length,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: 1,
-          mainAxisSpacing: 5,
-          childAspectRatio: 0.7,
+      body: _showingScreen[_selectedMenu]!.body,
+      bottomNavigationBar: BottomAppBar(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            IconButton(
+              onPressed: () => setState(() {
+                _selectedMenu = Menu.productList;
+              }),
+              icon: const FaIcon(FontAwesomeIcons.house),
+            ),
+            IconButton(
+              onPressed: () => setState(() {
+                _selectedMenu = Menu.chatting;
+              }),
+              icon: const FaIcon(FontAwesomeIcons.solidComment),
+            ),
+            IconButton(
+              onPressed: () => setState(() {
+                _selectedMenu = Menu.profile;
+              }),
+              icon: const FaIcon(FontAwesomeIcons.solidUser),
+            ),
+          ],
         ),
-        itemBuilder: (context, index) {
-          final product = products[index];
-          return ProductItem(product: product);
-        },
       ),
     );
   }

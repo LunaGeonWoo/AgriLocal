@@ -1,5 +1,5 @@
 import 'package:agrilocal/features/product_detail/product_detail_screen.dart';
-import 'package:agrilocal/features/home/product_model.dart';
+import 'package:agrilocal/product_list/product_list_model.dart';
 import 'package:flutter/material.dart';
 
 class ProductItem extends StatelessWidget {
