@@ -45,10 +45,6 @@ class ProductDetailScreen extends StatelessWidget {
       appBar: AppBar(
         title: Row(
           children: [
-            // IconButton(
-            //   onPressed: () {},
-            //   icon: const FaIcon(FontAwesomeIcons.house),
-            // ),
             const Spacer(),
             IconButton(
               onPressed: () {},

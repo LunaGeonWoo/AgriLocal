@@ -1,28 +1,69 @@
 import 'package:flutter/material.dart';
 
-class ChattingScreen extends StatelessWidget {
-  ChattingScreen({super.key});
+class ChattingScreen extends StatefulWidget {
+  const ChattingScreen({super.key});
 
+  @override
+  _ChattingScreenState createState() => _ChattingScreenState();
+}
+
+class _ChattingScreenState extends State<ChattingScreen> {
   final TextEditingController _controller = TextEditingController();
+  List<Map<String, String>> messages = [];
+
+  void _sendMessage() {
+    setState(() {
+      messages
+          .add({"text": _controller.text, "time": DateTime.now().toString()});
+      _controller.clear();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('채팅'),
+        title: const Text("김농부"),
       ),
       body: Column(
         children: <Widget>[
           Expanded(
-            child: ListView(
-              // This is just a placeholder for chat messages
-              children: const <Widget>[
-                ListTile(
-                  leading: Icon(Icons.account_circle),
-                  title: Text('사용자1'),
-                  subtitle: Text('안녕하세요!'),
-                ),
-              ],
+            child: ListView.builder(
+              itemCount: messages.length,
+              itemBuilder: (context, index) {
+                return Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                  alignment: Alignment.centerRight,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 14, vertical: 10),
+                    decoration: BoxDecoration(
+                      color: Colors.green,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: <Widget>[
+                        Text(
+                          messages[index]["text"]!,
+                          style: const TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                        Text(
+                          messages[index]["time"]!
+                              .substring(11, 16), // 시간 포맷 조정
+                          style: const TextStyle(
+                            color: Colors.white70,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
             ),
           ),
           Padding(
@@ -40,11 +81,7 @@ class ChattingScreen extends StatelessWidget {
                 ),
                 IconButton(
                   icon: const Icon(Icons.send),
-                  onPressed: () {
-                    // Implement sending message
-                    print('Message sent: ${_controller.text}');
-                    _controller.clear();
-                  },
+                  onPressed: _sendMessage,
                 ),
               ],
             ),
