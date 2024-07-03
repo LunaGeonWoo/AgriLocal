@@ -1,5 +1,5 @@
-import 'package:agrilocal/product_list/product_item.dart';
-import 'package:agrilocal/product_list/product_list_model.dart';
+import 'package:agrilocal/features/product/product_list_item.dart';
+import 'package:agrilocal/features/product/product_list_model.dart';
 import 'package:flutter/material.dart';
 
 class ProductListScreen extends StatelessWidget {

@@ -1,5 +1,5 @@
 import 'package:agrilocal/features/chatting/chatting_screen.dart';
-import 'package:agrilocal/features/product_detail/product_detail_model.dart';
+import 'package:agrilocal/features/product/product_detail_model.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 

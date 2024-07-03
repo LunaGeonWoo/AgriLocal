@@ -12,8 +12,9 @@ class ChattingListScreen extends StatelessWidget {
             children: const <Widget>[
               ListTile(
                 leading: Icon(Icons.account_circle),
-                title: Text('사용자1'),
+                title: Text('김농부'),
                 subtitle: Text('안녕하세요!'),
+                trailing: Text("30분 전"),
               ),
             ],
           ),
