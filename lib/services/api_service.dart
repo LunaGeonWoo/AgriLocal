@@ -1,11 +1,12 @@
 import 'dart:convert';
 import 'package:agrilocal/features/models/users.dart';
 import 'package:agrilocal/features/models/users.token.dart';
+import 'package:agrilocal/features/models/users.token.refresh.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class ApiService {
-  final String baseUrl = 'http://192.168.1.208:8000/api/v1';
+  final String baseUrl = 'http://192.168.219.46:8000/api/v1';
 
   static const storage = FlutterSecureStorage();
 
@@ -80,11 +81,9 @@ class ApiService {
   }
 
   Future<bool> postRefreshToken() async {
-    final url = Uri.parse("$baseUrl/users/refresh/");
+    final url = Uri.parse("$baseUrl/users/token/refresh/");
     String? refreshToken = await storage.read(key: 'refresh');
-    if (refreshToken == null) {
-      throw Exception('No refresh token found');
-    }
+    if (refreshToken == null) return false;
     final response = await http.post(
       url,
       body: {
@@ -94,8 +93,8 @@ class ApiService {
     if (response.statusCode == 200) {
       final jsonData = jsonDecode(utf8.decode(response.bodyBytes));
       try {
-        await storage.write(key: 'access', value: jsonData['access']);
-        await storage.write(key: 'refresh', value: jsonData['refresh']);
+        final token = TokenRefreshModel.fromJson(jsonData);
+        await storage.write(key: 'access', value: token.access);
         return true;
       } catch (e) {
         throw Exception('Failed to refresh token');
