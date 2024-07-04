@@ -1,15 +1,16 @@
 import 'package:agrilocal/features/authentication/sign_up_screen.dart';
 import 'package:agrilocal/features/home/home_screen.dart';
+import 'package:agrilocal/services/api_service.dart';
 import 'package:flutter/material.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class LogInScreen extends StatefulWidget {
+  const LogInScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<LogInScreen> createState() => _LogInScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LogInScreenState extends State<LogInScreen> {
   final TextEditingController _idController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
@@ -69,7 +70,22 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
       bottomNavigationBar: BottomAppBar(
         child: ElevatedButton(
-          onPressed: () {
+          onPressed: () async {
+            try {
+              await ApiService().postToken(
+                username: _idController.text,
+                password: _passwordController.text,
+              );
+            } catch (e) {
+              showDialog(
+                context: context,
+                builder: (context) => const AlertDialog(
+                  title: Text('오류'),
+                  content: Text("로그인을 실패했습니다."),
+                ),
+              );
+              return;
+            }
             Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(builder: (context) => const HomeScreen()),

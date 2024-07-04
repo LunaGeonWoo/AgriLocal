@@ -1,4 +1,5 @@
 import 'package:agrilocal/features/home/home_screen.dart';
+import 'package:agrilocal/services/api_service.dart';
 import 'package:flutter/material.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -15,7 +16,47 @@ class _SignUpScreenState extends State<SignUpScreen> {
       TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
   String _idCheckMessage = '';
+  bool _idCheck = false;
+
+  bool checkValidEmail() {
+    final email = _emailController.text;
+    if (!RegExp(r'^[a-zA-Z0-9._]+@[a-zA-Z0-9]+\.[a-zA-Z]+').hasMatch(email)) {
+      return false;
+    }
+    return true;
+  }
+
+  bool checkSamePassword() {
+    if (_passwordController.text != _confirmPasswordController.text) {
+      return false;
+    }
+    return true;
+  }
+
+  Future<bool> checkId() async {
+    final id = _idController.text;
+    if (id.isEmpty) {
+      setState(() {
+        _idCheckMessage = '아이디를 입력해주세요.';
+        _idCheck = false;
+      });
+      return false;
+    } else if (await ApiService().checkId(username: id)) {
+      setState(() {
+        _idCheckMessage = '사용가능한 아이디 입니다.';
+        _idCheck = true;
+      });
+      return true;
+    } else {
+      setState(() {
+        _idCheckMessage = '이미 존재하는 아이디 입니다.';
+        _idCheck = false;
+      });
+      return false;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,12 +81,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                   ),
                   ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        _idCheckMessage = '사용가능한 아이디 입니다.';
-                      });
+                    onPressed: () async {
+                      await checkId();
                     },
-                    child: const Text("확인"),
+                    child: const Text(
+                      "확인",
+                    ),
                   )
                 ],
               ),
@@ -54,9 +95,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   padding: const EdgeInsets.only(top: 8.0),
                   child: Text(
                     _idCheckMessage,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 12,
-                      color: Colors.green,
+                      color: _idCheck ? Colors.green : Colors.red,
                     ),
                   ),
                 ),
@@ -90,13 +131,69 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   labelText: '주소',
                 ),
               ),
+              const SizedBox(height: 8),
+              TextField(
+                controller: _emailController,
+                decoration: const InputDecoration(
+                  labelText: '이메일',
+                ),
+              ),
             ],
           ),
         ),
       ),
       bottomNavigationBar: BottomAppBar(
         child: ElevatedButton(
-          onPressed: () {
+          onPressed: () async {
+            if (!checkValidEmail()) {
+              showDialog(
+                context: context,
+                builder: (context) => const AlertDialog(
+                  title: Text("오류"),
+                  content: Text("유효한 이메일 주소를 입력하세요."),
+                ),
+              );
+              return;
+            }
+            if (!checkSamePassword()) {
+              showDialog(
+                context: context,
+                builder: (context) => const AlertDialog(
+                  title: Text("오류"),
+                  content: Text("비밀번호가 일치하지 않습니다."),
+                ),
+              );
+              return;
+            }
+            if (!_idCheck) {
+              showDialog(
+                context: context,
+                builder: (context) => const AlertDialog(
+                  title: Text("오류"),
+                  content: Text("아이디를 확인해주세요."),
+                ),
+              );
+              return;
+            }
+
+            try {
+              await ApiService().postUsers(
+                username: _idController.text,
+                password: _passwordController.text,
+                name: _nameController.text,
+                email: _emailController.text,
+                address: _addressController.text,
+              );
+            } catch (e) {
+              showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: const Text("오류"),
+                  content: Text(e.toString()),
+                ),
+              );
+              return;
+            }
             Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(builder: (context) => const HomeScreen()),
