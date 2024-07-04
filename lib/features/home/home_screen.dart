@@ -1,5 +1,6 @@
 import 'package:agrilocal/features/chatting/chatting_list_screen.dart';
 import 'package:agrilocal/features/product/product_list_screen.dart';
+import 'package:agrilocal/features/profile/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -13,7 +14,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class ScreenData {
-  final String title;
+  final Widget title;
   final Widget body;
 
   ScreenData({
@@ -27,16 +28,23 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final _showingScreen = {
     Menu.productList: ScreenData(
-      title: "제품 리스트",
+      title: const Text("제품 리스트"),
       body: ProductListScreen(),
     ),
     Menu.chatting: ScreenData(
-      title: "채팅",
+      title: const Text("채팅"),
       body: const ChattingListScreen(),
     ),
     Menu.profile: ScreenData(
-      title: "프로필",
-      body: const Placeholder(),
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const Text("프로필"),
+          IconButton(
+              onPressed: () {}, icon: const FaIcon(FontAwesomeIcons.gear))
+        ],
+      ),
+      body: const ProfileScreen(),
     ),
   };
 
@@ -44,7 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(_showingScreen[_selectedMenu]!.title),
+        title: _showingScreen[_selectedMenu]!.title,
       ),
       body: _showingScreen[_selectedMenu]!.body,
       bottomNavigationBar: BottomAppBar(
