@@ -27,9 +27,8 @@ class ApiService {
         'address': address,
       },
     );
-    dynamic jsonData;
     if (response.statusCode == 200) {
-      jsonData = jsonDecode(utf8.decode(response.bodyBytes));
+      final jsonData = jsonDecode(utf8.decode(response.bodyBytes));
       try {
         UserModel.fromJson(jsonData);
       } catch (e) {
@@ -77,6 +76,32 @@ class ApiService {
       }
     } else {
       throw Exception('Failed to load user');
+    }
+  }
+
+  Future<bool> postRefreshToken() async {
+    final url = Uri.parse("$baseUrl/users/refresh/");
+    String? refreshToken = await storage.read(key: 'refresh');
+    if (refreshToken == null) {
+      throw Exception('No refresh token found');
+    }
+    final response = await http.post(
+      url,
+      body: {
+        'refresh': refreshToken,
+      },
+    );
+    if (response.statusCode == 200) {
+      final jsonData = jsonDecode(utf8.decode(response.bodyBytes));
+      try {
+        await storage.write(key: 'access', value: jsonData['access']);
+        await storage.write(key: 'refresh', value: jsonData['refresh']);
+        return true;
+      } catch (e) {
+        throw Exception('Failed to refresh token');
+      }
+    } else {
+      throw Exception('Failed to refresh token');
     }
   }
 }
