@@ -153,4 +153,23 @@ class ApiService {
       throw Exception('Failed to load product detail');
     }
   }
+
+  Future<UserModel> getMe() async {
+    final url = Uri.parse("$baseUrl/users/me/");
+    final response = await http.get(
+      url,
+      headers: {
+        'Authorization': 'Bearer ${await storage.read(key: 'access')}',
+      },
+    );
+    if (response.statusCode == 200) {
+      final product = jsonDecode(utf8.decode(response.bodyBytes));
+      return UserModel.fromJson(product);
+    } else if (response.statusCode == 401) {
+      await postRefreshToken();
+      return await getMe();
+    } else {
+      throw Exception('Failed to load product detail');
+    }
+  }
 }
