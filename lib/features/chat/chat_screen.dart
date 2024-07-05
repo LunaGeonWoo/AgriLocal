@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
@@ -23,7 +24,15 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("김농부"),
+        title: const ListTile(
+          title: Text(
+            "김농부",
+            style: TextStyle(
+              fontSize: 20,
+            ),
+          ),
+          trailing: FaIcon(FontAwesomeIcons.flag),
+        ),
       ),
       body: Column(
         children: <Widget>[
