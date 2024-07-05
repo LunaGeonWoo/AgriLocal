@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class ApiService {
-  final String baseUrl = 'http://192.168.219.46:8000/api/v1';
+  final String baseUrl = 'http://192.168.1.6:8000/api/v1';
 
   static const storage = FlutterSecureStorage();
 
@@ -102,5 +102,11 @@ class ApiService {
     } else {
       throw Exception('Failed to refresh token');
     }
+  }
+
+  Future<bool> logout() async {
+    await storage.delete(key: 'access');
+    await storage.delete(key: 'refresh');
+    return true;
   }
 }
