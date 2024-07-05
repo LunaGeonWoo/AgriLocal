@@ -63,7 +63,7 @@ class ProductItem extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        product.producer,
+                        product.owner,
                         style: const TextStyle(
                           color: Colors.black54,
                           fontSize: 12,

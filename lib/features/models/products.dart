@@ -1,6 +1,6 @@
 class ProductTinyModel {
   final int id;
-  final String producer;
+  final String owner;
   final String address;
   final String name;
   final String imageUrl;
@@ -9,7 +9,7 @@ class ProductTinyModel {
 
   ProductTinyModel.fromJson(Map<String, dynamic> json)
       : id = json["id"],
-        producer = json["producer"],
+        owner = json["owner"],
         address = json["address"],
         name = json["name"],
         imageUrl = json["image_url"],
