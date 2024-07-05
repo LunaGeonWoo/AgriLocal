@@ -1,8 +1,8 @@
-import 'package:agrilocal/features/chat/chatting_screen.dart';
+import 'package:agrilocal/features/chat/chat_screen.dart';
 import 'package:flutter/material.dart';
 
-class ChattingListScreen extends StatelessWidget {
-  const ChattingListScreen({super.key});
+class ChatListScreen extends StatelessWidget {
+  const ChatListScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +16,7 @@ class ChattingListScreen extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const ChattingScreen(),
+                      builder: (context) => const ChatScreen(),
                     ),
                   );
                 },
