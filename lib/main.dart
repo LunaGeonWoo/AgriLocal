@@ -26,13 +26,12 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home: FutureBuilder<Widget>(
-        future: _getInitialScreen(), // 초기 화면 결정 로직을 FutureBuilder로 감싸기
+        future: _getInitialScreen(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
-            return snapshot.data ??
-                const LogInScreen(); // 데이터가 있으면 해당 화면을, 없으면 LogInScreen을 반환
+            return snapshot.data ?? const LogInScreen();
           } else {
-            return const CircularProgressIndicator(); // 로딩 중에는 로딩 인디케이터 표시
+            return const CircularProgressIndicator();
           }
         },
       ),
