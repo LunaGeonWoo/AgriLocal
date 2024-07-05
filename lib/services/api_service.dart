@@ -3,12 +3,11 @@ import 'package:agrilocal/features/models/products.dart';
 import 'package:agrilocal/features/models/products.detail.dart';
 import 'package:agrilocal/features/models/users.dart';
 import 'package:agrilocal/features/models/users.token.dart';
-import 'package:agrilocal/features/models/users.token.refresh.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class ApiService {
-  final String baseUrl = 'http://192.168.1.6:8000/api/v1';
+  final String baseUrl = 'http://10.0.2.2:8000/api/v1';
 
   static const storage = FlutterSecureStorage();
 
@@ -95,7 +94,7 @@ class ApiService {
     if (response.statusCode == 200) {
       final jsonData = jsonDecode(utf8.decode(response.bodyBytes));
       try {
-        final token = TokenRefreshModel.fromJson(jsonData);
+        final token = TokenModel.fromJson(jsonData);
         await storage.write(key: 'access', value: token.access);
         return true;
       } catch (e) {
