@@ -1,4 +1,4 @@
-import 'package:agrilocal/features/chatting/chatting_screen.dart';
+import 'package:agrilocal/features/chat/chatting_screen.dart';
 import 'package:agrilocal/features/models/products.detail.dart';
 import 'package:agrilocal/services/api_service.dart';
 import 'package:agrilocal/services/time_format.dart';
