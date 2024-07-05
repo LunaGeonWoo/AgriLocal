@@ -84,12 +84,25 @@ class ProductItem extends StatelessWidget {
                       fontSize: 16,
                     ),
                   ),
-                  Text(
-                    '${product.price}원',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        '${product.price}원',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      ),
+                      Text(
+                        product.address,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w400,
+                          color: Colors.black45,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
