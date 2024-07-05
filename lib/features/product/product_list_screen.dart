@@ -1,85 +1,51 @@
+import 'package:agrilocal/features/models/products.dart';
 import 'package:agrilocal/features/product/product_list_item.dart';
-import 'package:agrilocal/features/product/product_list_model.dart';
+import 'package:agrilocal/services/api_service.dart';
 import 'package:flutter/material.dart';
 
-class ProductListScreen extends StatelessWidget {
-  ProductListScreen({
-    super.key,
-  });
+class ProductListScreen extends StatefulWidget {
+  const ProductListScreen({super.key});
 
-  final List<Product> products = [
-    Product(
-      name: '김치볶음밥',
-      imageUrl:
-          'https://roout.co.kr/m/p/u/vHf969g/c/tsLVxjn3JeU/i/tmaNCLUJoFS.jpg?w=720',
-      price: 8000,
-      producer: "김농부",
-    ),
-    Product(
-      name: '생선구이',
-      imageUrl:
-          'https://roout.co.kr/m/p/u/vHf969g/c/tsLVxjn3JeU/i/tmaNCLUJoFS.jpg?w=720',
-      price: 4220,
-      producer: "김어부",
-    ),
-    Product(
-      name: '생선구이',
-      imageUrl:
-          'https://roout.co.kr/m/p/u/vHf969g/c/tsLVxjn3JeU/i/tmaNCLUJoFS.jpg?w=720',
-      price: 4220,
-      producer: "김어부",
-    ),
-    Product(
-      name: '생선구이',
-      imageUrl:
-          'https://roout.co.kr/m/p/u/vHf969g/c/tsLVxjn3JeU/i/tmaNCLUJoFS.jpg?w=720',
-      price: 4220,
-      producer: "김어부",
-    ),
-    Product(
-      name: '생선구이',
-      imageUrl:
-          'https://roout.co.kr/m/p/u/vHf969g/c/tsLVxjn3JeU/i/tmaNCLUJoFS.jpg?w=720',
-      price: 4220,
-      producer: "김어부",
-    ),
-    Product(
-      name: '생선구이',
-      imageUrl:
-          'https://roout.co.kr/m/p/u/vHf969g/c/tsLVxjn3JeU/i/tmaNCLUJoFS.jpg?w=720',
-      price: 4220,
-      producer: "김어부",
-    ),
-    Product(
-      name: '생선구이',
-      imageUrl:
-          'https://roout.co.kr/m/p/u/vHf969g/c/tsLVxjn3JeU/i/tmaNCLUJoFS.jpg?w=720',
-      price: 4220,
-      producer: "김어부",
-    ),
-    Product(
-      name: '생선구이',
-      imageUrl:
-          'https://roout.co.kr/m/p/u/vHf969g/c/tsLVxjn3JeU/i/tmaNCLUJoFS.jpg?w=720',
-      price: 4220,
-      producer: "김어부",
-    ),
-  ];
+  @override
+  _ProductListScreenState createState() => _ProductListScreenState();
+}
+
+class _ProductListScreenState extends State<ProductListScreen> {
+  late Future<List<ProductTinyModel>> _productsFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _productsFuture = ApiService().getProducts();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return GridView.builder(
-      padding: const EdgeInsets.all(10),
-      itemCount: products.length,
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        crossAxisSpacing: 1,
-        mainAxisSpacing: 5,
-        childAspectRatio: 0.7,
-      ),
-      itemBuilder: (context, index) {
-        final product = products[index];
-        return ProductItem(product: product);
+    return FutureBuilder<List<ProductTinyModel>>(
+      future: _productsFuture,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
+        } else if (snapshot.hasData) {
+          return GridView.builder(
+            padding: const EdgeInsets.all(10),
+            itemCount: snapshot.data!.length,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              crossAxisSpacing: 1,
+              mainAxisSpacing: 5,
+              childAspectRatio: 0.7,
+            ),
+            itemBuilder: (context, index) {
+              final product = snapshot.data![index];
+              return ProductItem(product: product);
+            },
+          );
+        } else {
+          return const Center(child: Text('No products found'));
+        }
       },
     );
   }

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:agrilocal/features/models/products.dart';
 import 'package:agrilocal/features/models/users.dart';
 import 'package:agrilocal/features/models/users.token.dart';
 import 'package:agrilocal/features/models/users.token.refresh.dart';
@@ -108,5 +109,26 @@ class ApiService {
     await storage.delete(key: 'access');
     await storage.delete(key: 'refresh');
     return true;
+  }
+
+  Future<List<ProductTinyModel>> getProducts() async {
+    List<ProductTinyModel> productInstances = [];
+    final url = Uri.parse("$baseUrl/products/");
+    final response = await http.get(
+      url,
+      headers: {
+        'Authorization': 'Bearer ${await storage.read(key: 'access')}',
+      },
+    );
+    if (response.statusCode == 200) {
+      final List<dynamic> products =
+          jsonDecode(utf8.decode(response.bodyBytes));
+      for (var product in products) {
+        productInstances.add(ProductTinyModel.fromJson(product));
+      }
+      return productInstances;
+    } else {
+      throw Exception('Failed to load user');
+    }
   }
 }
