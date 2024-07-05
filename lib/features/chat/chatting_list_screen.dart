@@ -1,4 +1,4 @@
-import 'package:agrilocal/features/chatting/chatting_screen.dart';
+import 'package:agrilocal/features/chat/chatting_screen.dart';
 import 'package:flutter/material.dart';
 
 class ChattingListScreen extends StatelessWidget {
