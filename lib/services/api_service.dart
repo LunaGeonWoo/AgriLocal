@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:agrilocal/features/models/products.dart';
+import 'package:agrilocal/features/models/products.detail.dart';
 import 'package:agrilocal/features/models/users.dart';
 import 'package:agrilocal/features/models/users.token.dart';
 import 'package:agrilocal/features/models/users.token.refresh.dart';
@@ -127,8 +128,30 @@ class ApiService {
         productInstances.add(ProductTinyModel.fromJson(product));
       }
       return productInstances;
+    } else if (response.statusCode == 401) {
+      await postRefreshToken();
+      return await getProducts();
     } else {
-      throw Exception('Failed to load user');
+      throw Exception('Failed to load products');
+    }
+  }
+
+  Future<ProductDetailModel> getProductDetail(id) async {
+    final url = Uri.parse("$baseUrl/products/$id/");
+    final response = await http.get(
+      url,
+      headers: {
+        'Authorization': 'Bearer ${await storage.read(key: 'access')}',
+      },
+    );
+    if (response.statusCode == 200) {
+      final product = jsonDecode(utf8.decode(response.bodyBytes));
+      return ProductDetailModel.fromJson(product);
+    } else if (response.statusCode == 401) {
+      await postRefreshToken();
+      return await getProductDetail(id);
+    } else {
+      throw Exception('Failed to load product detail');
     }
   }
 }

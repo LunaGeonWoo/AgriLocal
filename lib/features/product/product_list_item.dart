@@ -1,5 +1,6 @@
 import 'package:agrilocal/features/models/products.dart';
 import 'package:agrilocal/features/product/product_detail_screen.dart';
+import 'package:agrilocal/services/time_format.dart';
 import 'package:flutter/material.dart';
 
 class ProductItem extends StatelessWidget {
@@ -10,27 +11,11 @@ class ProductItem extends StatelessWidget {
 
   final ProductTinyModel product;
 
-  String _formatDate(String dateString) {
-    DateTime dateTime = DateTime.parse(dateString);
-    Duration difference = DateTime.now().difference(dateTime);
-    String formattedDate;
-    if (difference.inDays >= 1) {
-      formattedDate = '${difference.inDays}일 전';
-    } else if (difference.inHours >= 1) {
-      formattedDate = '${difference.inHours}시간 전';
-    } else if (difference.inMinutes >= 1) {
-      formattedDate = '${difference.inMinutes}분 전';
-    } else {
-      formattedDate = '방금 전';
-    }
-    return formattedDate;
-  }
-
   void _onTap(context) {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => ProductDetailScreen(),
+        builder: (context) => ProductDetailScreen(id: product.id),
       ),
     );
   }
@@ -70,7 +55,7 @@ class ProductItem extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        _formatDate(product.createdAt),
+                        TimeFormatter().formatDate(product.createdAt),
                         style: const TextStyle(
                           color: Colors.black87,
                         ),
