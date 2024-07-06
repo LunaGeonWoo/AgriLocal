@@ -8,7 +8,7 @@ class ProfileScreen extends StatelessWidget {
   void onPressed(context) async {
     if (await ApiService().logout()) {
       Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => const MyApp()),
+        MaterialPageRoute(builder: (context) => const AgriLocal()),
         (Route<dynamic> route) => false,
       );
     } else {

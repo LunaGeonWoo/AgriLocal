@@ -4,11 +4,11 @@ import 'package:agrilocal/services/api_service.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const AgriLocal());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class AgriLocal extends StatelessWidget {
+  const AgriLocal({super.key});
 
   Future<Widget> _getInitialScreen() async {
     if (await ApiService().postRefreshToken()) {
