@@ -14,4 +14,9 @@ class TimeFormatter {
     }
     return formattedDate;
   }
+
+  String formatDetailTime(String dateString) {
+    DateTime dateTime = DateTime.parse(dateString);
+    return '${dateTime.year}년 ${dateTime.month}월 ${dateTime.day}일';
+  }
 }

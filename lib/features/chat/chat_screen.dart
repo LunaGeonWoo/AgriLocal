@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class ChattingScreen extends StatefulWidget {
-  const ChattingScreen({super.key});
+class ChatScreen extends StatefulWidget {
+  const ChatScreen({super.key});
 
   @override
-  _ChattingScreenState createState() => _ChattingScreenState();
+  _ChatScreenState createState() => _ChatScreenState();
 }
 
-class _ChattingScreenState extends State<ChattingScreen> {
+class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _controller = TextEditingController();
   List<Map<String, String>> messages = [];
 
@@ -23,7 +24,15 @@ class _ChattingScreenState extends State<ChattingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("김농부"),
+        title: const ListTile(
+          title: Text(
+            "김농부",
+            style: TextStyle(
+              fontSize: 20,
+            ),
+          ),
+          trailing: FaIcon(FontAwesomeIcons.flag),
+        ),
       ),
       body: Column(
         children: <Widget>[

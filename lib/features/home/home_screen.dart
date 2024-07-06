@@ -1,4 +1,4 @@
-import 'package:agrilocal/features/chatting/chatting_list_screen.dart';
+import 'package:agrilocal/features/chat/chat_list_screen.dart';
 import 'package:agrilocal/features/product/product_list_screen.dart';
 import 'package:agrilocal/features/profile/profile_screen.dart';
 import 'package:flutter/material.dart';
@@ -29,11 +29,11 @@ class _HomeScreenState extends State<HomeScreen> {
   final _showingScreen = {
     Menu.productList: ScreenData(
       title: const Text("제품 리스트"),
-      body: ProductListScreen(),
+      body: const ProductListScreen(),
     ),
     Menu.chatting: ScreenData(
       title: const Text("채팅"),
-      body: const ChattingListScreen(),
+      body: const ChatListScreen(),
     ),
     Menu.profile: ScreenData(
       title: Row(
